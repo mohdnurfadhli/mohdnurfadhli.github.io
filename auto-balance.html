@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Auto Balance</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:300,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
+</head>
+
+<style>
+input[type=checkbox] + label {
+  display: block;
+  margin: 0.1em;
+  cursor: pointer;
+  padding: 0.1em;
+}
+
+input[type=checkbox] {
+  display: none;
+}
+
+input[type=checkbox] + label:before {
+  content: "\2714";
+  border: 0.1em solid #000;
+  border-radius: 0.2em;
+  display: inline-block;
+  width: 1.5em;
+  height: 1.7em;
+  padding-left: 0.2em;
+  padding-bottom: 0.3em;
+  margin-right: 0.2em;
+  vertical-align: bottom;
+  color: transparent;
+  transition: .2s;
+}
+
+input[type=checkbox] + label:active:before {
+  transform: scale(0);
+}
+
+input[type=checkbox]:checked + label:before {
+  background-color: MediumSeaGreen;
+  border-color: MediumSeaGreen;
+  color: #fff;
+}
+
+input[type=checkbox]:disabled + label:before {
+  transform: scale(1);
+  border-color: #aaa;
+}
+
+input[type=checkbox]:checked:disabled + label:before {
+  transform: scale(1);
+  background-color: #bfb;
+  border-color: #bfb;
+}
+
+.hidden { display:none; }
+</style>
+
+<body onload="myLoad()">
+<div class="offcanvas-wrapper">
+	<div class="container padding-bottom-2x mb-2">
+	<hr class="margin-bottom-1x">
+		<div class="row">
+
+			<div class="col-lg-6 col-md-5">
+				<form id="addToTable" method="post">
+				<table>
+					<tr>
+						<td>Cycle:</td>
+						<td><input type="text" class="form-control" name="Cycle" id="Cycle" /></td>
+					</tr>
+					<tr>
+						<td>Duration:</td>
+						<td><input type="text" class="form-control" name="Duration" id="Duration" placeholder="Week"/> </td>
+					</tr>
+					<tr>
+						<td>Hours:</td>
+						<td><input type="text" name="Hours" id="Hours" class="form-control col-lg-4"></td>			
+					</tr>
+				</table>
+
+				<div class="sp-buttons mt-2 mb-2">
+					<button class="btn btn-primary btn-rounded"><i class="icon-shopping-cart"></i> Add To Table</button>
+				</div>
+                </form>
+			</div>
+
+			<div class="col-lg-6 col-md-7">
+				<div id="ajaxLoadCart"></div>	
+
+
+				
+			</div>
+			
+		</div>
+		<hr class="margin-bottom-1x">
+	</div> 
+</div>
+
+</body>
+</html>
+
+	<script src="js/ajax/jquery.js"></script>
+	
+<script>
+jQuery(document).ready(function(){
+jQuery("#addToTable").submit(function(e){
+
+    var Cycle = $('input[name="Cycle"]').val();
+    if (Cycle == "") {
+		alert("Cycle is Null");
+		return false;
+    }
+
+	e.preventDefault();
+	var formData = jQuery(this).serialize();
+	$.ajax({
+		type: "POST",
+		url: "add-to-table-proses.php",
+		data: formData,
+		success: function(respond){
+			$("#ajaxLoadCart").load("auto-balance.php");
+			$("#ajaxLoadCart").show();
+		}
+	});
+	
+	return false;
+});
+});
+
+function myLoad() {
+	$("#ajaxLoadCart").load("auto-balance.php");
+	$("#ajaxLoadCart").show();
+}
+</script>
